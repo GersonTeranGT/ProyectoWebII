@@ -4,7 +4,7 @@ import { Servicios } from "../../shared/servicios/servicios";
 
 @Component({
   selector: 'app-home',
-  imports: [Hero, Servicios],
+  imports: [Hero, Servicios,],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
