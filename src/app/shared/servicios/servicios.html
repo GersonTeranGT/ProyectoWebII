@@ -1,4 +1,4 @@
-<section class="py-16 bg-white">
+<section class="py-16 bg-emerald-50">
     <div class="max-w-6xl mx-auto px-4">
         <div class="text-center mb-12">
             <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Nuestros Servicios</h2>
@@ -43,7 +43,7 @@
             <div class="relative">
                 <input type="text" (input)="busqueda($event)" placeholder="Ej: Psicología, Taller, Apoyo..."
                     class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 border pl-10">
-                <svg class="absolute left-3 top-3.5 w-4 h-4 text-gray-400" aria-hidden="true"
+                <svg class="absolute left-3 top-4.5 w-4 h-4 text-gray-400" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
@@ -60,7 +60,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             @for (servicio of serviciosFiltrados; track servicio.id) {
             <div
-                class="flex flex-col rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                class="flex flex-col rounded-xl bg-white shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
 
                 <!--icono del servicio -->
                 <div
@@ -143,10 +143,7 @@
                     </svg>
                 </div>
                 <p class="text-gray-500 text-lg mb-4">No se encontraron servicios que coincidan con tu búsqueda.</p>
-                <button (click)="limpiarBusqueda()"
-                    class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition">
-                    Mostrar todos los servicios
-                </button>
+                
             </div>
             }
         </div>
