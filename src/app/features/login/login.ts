@@ -9,6 +9,9 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
   styleUrl: './login.css',
 })
 export class Login implements OnInit {
+
+  anio: number = new Date().getFullYear();
+
   credenciales = {
     username: '',
     password: ''
@@ -27,55 +30,36 @@ export class Login implements OnInit {
   ) { }
 
   ngOnInit() {
-    // Verificar si viene de un logout exitoso
-    this.route.queryParams.subscribe(params => {
-      this.mostrarMensajeLogout = params['logout'] === 'true';
-    });
+    //verificamos si viene de un logout exitoso
+    // this.route.queryParams.subscribe(params => {
+    //   this.mostrarMensajeLogout = params['logout'] === 'true';
+    // });
 
-    // Cargar usuario guardado si existe
-    const usuarioGuardado = localStorage.getItem('usuarioRecordado');
-    if (usuarioGuardado) {
-      this.credenciales.username = usuarioGuardado;
-      this.recordarUsuario = true;
-    }
   }
 
   togglePassword() {
     this.mostrarPassword = !this.mostrarPassword;
   }
 
-  onSubmit() {
+  ingresar() {
     this.submitted = true;
     this.errorMessage = '';
 
-    // Validaciones básicas
+    //validaciones basicas
     if (!this.credenciales.username || !this.credenciales.password) {
       return;
     }
 
     this.cargando = true;
 
-    // SIMULACIÓN de llamada a API
+    //SIMULACION de llamada a la API
     setTimeout(() => {
-      // Aquí iría tu lógica real de autenticación
+      //aqui ira tu lógica real de autenticacion
       if (this.credenciales.username === 'admin' && this.credenciales.password === '123456') {
 
-        // Guardar usuario si seleccionó "Recordarme"
-        if (this.recordarUsuario) {
-          localStorage.setItem('usuarioRecordado', this.credenciales.username);
-        } else {
-          localStorage.removeItem('usuarioRecordado');
-        }
 
-        // Simular token de autenticación
-        localStorage.setItem('token', 'fake-jwt-token');
-        localStorage.setItem('usuario', JSON.stringify({
-          username: this.credenciales.username,
-          nombre: 'Usuario Admin'
-        }));
-
-        // Redirigir al inicio
-        this.router.navigate(['/inicio']);
+        //redirigir al inicio
+        this.router.navigate(['']);
       } else {
         this.errorMessage = 'Usuario o contraseña incorrectos';
         this.cargando = false;

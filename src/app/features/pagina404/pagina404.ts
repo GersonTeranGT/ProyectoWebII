@@ -12,10 +12,10 @@ export class Pagina404 {
   urlIntentada: string = '';
 
   constructor(private location: Location, private router: Router) {
-    this.urlIntentada = this.router.url;  //captura la URL que causó el 404
+    this.urlIntentada = this.router.url;  //captura la URL que causo el 404
   }
 
-  goBack(): void {
+  regresar(): void {
     this.location.back();
   }
 }
