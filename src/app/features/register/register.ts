@@ -15,7 +15,7 @@ export class Register {
   private servicioUsuario = inject(UsuarioServicios);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private cdr = inject(ChangeDetectorRef); // 👈 IMPORTANTE: Forzar detección de cambios
+  private cdr = inject(ChangeDetectorRef);
 
   editando = false;
   cargando = false;
@@ -25,6 +25,13 @@ export class Register {
     name: '',
     email: '',
     phone: ''
+  };
+
+  // Objeto para datos de inicio de sesión (SOLO VALIDACIÓN, NO SE GUARDA EN BD)
+  datosSesion = {
+    username: '',
+    password: '',
+    confirmPassword: ''
   };
 
   ngOnInit(): void {
@@ -40,7 +47,6 @@ export class Register {
     this.usuarioId = id;
     
     this.servicioUsuario.getUsuarioById(id).subscribe(usuario => {
-      // Asignar los datos
       this.nuevoUsuario = { 
         name: usuario.name, 
         email: usuario.email, 
@@ -49,8 +55,6 @@ export class Register {
       
       this.editando = true;
       this.cargando = false;
-      
-      // 👈 FORZAR la detección de cambios para que los inputs se actualicen INMEDIATAMENTE
       this.cdr.detectChanges();
     });
   }
@@ -59,7 +63,6 @@ export class Register {
     this.cargando = true;
 
     if (this.editando && this.usuarioId) {
-      // Enviamos SOLO name, email, phone (SIN el id)
       this.servicioUsuario.putUsuario(this.usuarioId, {
         name: this.nuevoUsuario.name,
         email: this.nuevoUsuario.email,
@@ -69,7 +72,6 @@ export class Register {
         this.router.navigate(['/usuarios']);
       });
     } else {
-      // Crear nuevo usuario
       this.servicioUsuario.postUsuario({
         name: this.nuevoUsuario.name,
         email: this.nuevoUsuario.email,
