@@ -1,3 +1,10 @@
+<app-hero
+    titulo="Tabla de usuarios"
+    parrafo="Aquí podrás gestionar la información de todos los usuarios del sistema."
+    imagenFondo="https://images.pexels.com/photos/3934023/pexels-photo-3934023.jpeg" 
+    [mostrarBoton1]="false" 
+    [mostrarBoton2]="false" 
+></app-hero>
 <div class="relative min-h-screen flex items-start justify-center p-4 overflow-hidden">
     <!--fondo tematico-->
     <div class="absolute inset-0 z-0">
@@ -23,7 +30,7 @@
             </div>
             
             <a routerLink="/register" 
-               class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
+                class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                 </svg>
