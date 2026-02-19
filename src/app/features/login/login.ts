@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -40,31 +41,52 @@ export class Login {
   }
 
   ingresar() {
-    this.submitted = true;
-    this.errorMessage = '';
+  this.submitted = true;
+  this.errorMessage = '';
 
-    if (!this.credenciales.email || !this.credenciales.password) {
-      return;
-    }
+  if (!this.credenciales.email || !this.credenciales.password) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Campos incompletos',
+      text: 'Por favor ingresa tu correo y contraseña'
+    });
+    return;
+  }
 
-    this.cargando = true;
+  this.cargando = true;
 
-    this.authService.login(this.credenciales.email, this.credenciales.password).subscribe({
-      next: (success) => {
-        this.cargando = false;
-        
-        if (success) {
+  this.authService.login(this.credenciales.email, this.credenciales.password).subscribe({
+    next: (success) => {
+      this.cargando = false;
+
+      if (success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Bienvenido',
+          text: 'Has iniciado sesión correctamente'
+        }).then(() => {
           // Cambiar de '/inicio' a '' (ruta raíz)
           this.router.navigate(['']);
-        } else {
-          this.errorMessage = 'Usuario o contraseña incorrectos';
-        }
-      },
-      error: (error) => {
-        this.cargando = false;
-        this.errorMessage = 'Error al conectar con el servidor';
-        console.error('Error en login:', error);
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de autenticación',
+          text: 'Usuario o contraseña incorrectos'
+        });
       }
-    });
-  }
+    },
+    error: (error) => {
+      this.cargando = false;
+      console.error('Error en login:', error);
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de conexión',
+        text: 'No se pudo conectar con el servidor. Intenta nuevamente.'
+      });
+    }
+  });
+}
+
 }

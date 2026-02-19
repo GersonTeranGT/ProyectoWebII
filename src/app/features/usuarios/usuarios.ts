@@ -3,6 +3,7 @@ import { RouterLink, Router } from '@angular/router';
 import { UsuarioServicios } from '../../services/usuario-servicios';
 import { Usuario } from '../../models/usuario';
 import { Hero } from "../../shared/hero/hero";
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-usuarios',
@@ -11,6 +12,8 @@ import { Hero } from "../../shared/hero/hero";
   styleUrl: './usuarios.css'
 })
 export class Usuarios {
+  //inyeccion
+  public authService = inject(AuthService)
 
   private servicioUsuario = inject(UsuarioServicios);
   private router = inject(Router);

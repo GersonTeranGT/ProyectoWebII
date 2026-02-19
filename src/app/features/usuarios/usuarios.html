@@ -28,7 +28,7 @@
                 <h1 class="text-3xl font-bold text-gray-900 tracking-wide mt-2">LISTA DE USUARIOS</h1>
                 <p class="text-gray-600 mt-1">Gestión de usuarios registrados</p>
             </div>
-            
+            @if (!authService.sesionIniciada()) {
             <a routerLink="/register" 
                 class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,6 +36,7 @@
                 </svg>
                 Nuevo usuario
             </a>
+        }
         </div>
 
         <!--tabla-->
@@ -64,6 +65,7 @@
                         <td class="px-6 py-4 font-mono text-sm">{{ usuario.phone }}</td>
                         <td class="px-6 py-4">
                             <div class="flex items-center justify-center gap-3">
+                                @if (authService.rolActual() === 'USER') {
                                 <button (click)="editarUsuario(usuario)" 
                                         class="p-2 text-emerald-700 hover:bg-emerald-100 rounded-lg transition-colors"
                                         title="Editar usuario">
@@ -71,6 +73,8 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>
                                 </button>
+                            }
+                                @if (authService.rolActual() === 'ADMIN') {
                                 <button (click)="eliminarUsuario(usuario.id!)" 
                                         class="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
                                         title="Eliminar usuario">
@@ -78,6 +82,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
                                 </button>
+                            }
                             </div>
                         </td>
                     </tr>
