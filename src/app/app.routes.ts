@@ -6,20 +6,24 @@ import { Usuarios } from './features/usuarios/usuarios';
 import { HistorialTest } from './features/historial-test/historial-test';
 import { Test } from './features/test/test';
 import { Register } from './features/register/register';
+import { authGuard } from './guards/auth-guard';
 
 
 export const routes: Routes = [
-    //1. ruta incial
-    {path:'', component:Home},
-    //2. rutas de navegacion
-    {path:'login', component:Login},
-    {path:'usuarios', component:Usuarios},
-    {path:'historial-test', component:HistorialTest},
-    {path:'test', component:Test},
-    {path:'register', component:Register},
-    // Ruta para registro CON parametro (edición)
-    {path:'register/:id', component: Register},
+    // Ruta incial - Home
+    { path: '', component: Home },
+    { path: 'inicio', redirectTo: '', pathMatch: 'full' },
     
-    //3. redireccion si el usuario escribe una url no existe
-    {path:'**', component:Pagina404}
+    // Rutas públicas
+    { path: 'login', component: Login },
+    { path: 'register', component: Register },
+    { path: 'register/:id', component: Register },
+    
+    // Rutas protegidas con authGuard (solo usuarios autenticados)
+    { path: 'usuarios', component: Usuarios, canActivate: [authGuard] },
+    { path: 'historial-test', component: HistorialTest, canActivate: [authGuard] },
+    { path: 'test', component: Test, canActivate: [authGuard] },
+    
+    // Ruta 404
+    { path: '**', component: Pagina404 }
 ];

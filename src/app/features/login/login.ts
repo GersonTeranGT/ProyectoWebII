@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-login',
@@ -8,33 +9,30 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login implements OnInit {
+export class Login {
 
   anio: number = new Date().getFullYear();
 
   credenciales = {
-    username: '',
+    email: '',
     password: ''
   };
 
   mostrarPassword = false;
-  recordarUsuario = false;
   cargando = false;
   submitted = false;
   errorMessage = '';
   mostrarMensajeLogout = false;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute
-  ) { }
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   ngOnInit() {
-    //verificamos si viene de un logout exitoso
-    // this.route.queryParams.subscribe(params => {
-    //   this.mostrarMensajeLogout = params['logout'] === 'true';
-    // });
-
+    // Verificar si viene de un logout exitoso
+    this.route.queryParams.subscribe(params => {
+      this.mostrarMensajeLogout = params['logout'] === 'true';
+    });
   }
 
   togglePassword() {
@@ -45,25 +43,28 @@ export class Login implements OnInit {
     this.submitted = true;
     this.errorMessage = '';
 
-    //validaciones basicas
-    if (!this.credenciales.username || !this.credenciales.password) {
+    if (!this.credenciales.email || !this.credenciales.password) {
       return;
     }
 
     this.cargando = true;
 
-    //SIMULACION de llamada a la API
-    setTimeout(() => {
-      //aqui ira tu lógica real de autenticacion
-      if (this.credenciales.username === 'admin' && this.credenciales.password === '123456') {
-
-
-        //redirigir al inicio
-        this.router.navigate(['']);
-      } else {
-        this.errorMessage = 'Usuario o contraseña incorrectos';
+    this.authService.login(this.credenciales.email, this.credenciales.password).subscribe({
+      next: (success) => {
         this.cargando = false;
+        
+        if (success) {
+          // Cambiar de '/inicio' a '' (ruta raíz)
+          this.router.navigate(['']);
+        } else {
+          this.errorMessage = 'Usuario o contraseña incorrectos';
+        }
+      },
+      error: (error) => {
+        this.cargando = false;
+        this.errorMessage = 'Error al conectar con el servidor';
+        console.error('Error en login:', error);
       }
-    }, 1500);
+    });
   }
 }
