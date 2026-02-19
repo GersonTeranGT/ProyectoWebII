@@ -3,4 +3,6 @@
     name: string;
     email: string;
     phone: string;
+    password: string;
+    rol: 'ADMIN' | 'USER';
 }
