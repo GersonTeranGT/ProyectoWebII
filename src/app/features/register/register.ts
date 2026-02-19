@@ -24,10 +24,11 @@ export class Register {
   nuevoUsuario: Usuario = {
     name: '',
     email: '',
-    phone: ''
+    phone: '',
+    password: '',
+    rol: 'USER'
   };
 
-  // Objeto para datos de inicio de sesión (SOLO VALIDACIÓN, NO SE GUARDA EN BD)
   datosSesion = {
     username: '',
     password: '',
@@ -50,7 +51,9 @@ export class Register {
       this.nuevoUsuario = { 
         name: usuario.name, 
         email: usuario.email, 
-        phone: usuario.phone
+        phone: usuario.phone,
+        password: usuario.password,
+        rol: usuario.rol
       };
       
       this.editando = true;
@@ -62,23 +65,49 @@ export class Register {
   guardarUsuario() {
     this.cargando = true;
 
+    // Validar que las contraseñas coincidan
+    if (this.datosSesion.password !== this.datosSesion.confirmPassword) {
+      alert('Las contraseñas no coinciden');
+      this.cargando = false;
+      return;
+    }
+
+    // Asignar la contraseña de datosSesion al nuevoUsuario
+    this.nuevoUsuario.password = this.datosSesion.password;
+
     if (this.editando && this.usuarioId) {
       this.servicioUsuario.putUsuario(this.usuarioId, {
         name: this.nuevoUsuario.name,
         email: this.nuevoUsuario.email,
-        phone: this.nuevoUsuario.phone
-      }).subscribe(() => {
-        this.cargando = false;
-        this.router.navigate(['/usuarios']);
+        phone: this.nuevoUsuario.phone,
+        password: this.nuevoUsuario.password,
+        rol: this.nuevoUsuario.rol
+      }).subscribe({
+        next: () => {
+          this.cargando = false;
+          this.router.navigate(['/usuarios']);
+        },
+        error: () => {
+          this.cargando = false;
+          alert('Error al actualizar usuario');
+        }
       });
     } else {
       this.servicioUsuario.postUsuario({
         name: this.nuevoUsuario.name,
         email: this.nuevoUsuario.email,
-        phone: this.nuevoUsuario.phone
-      }).subscribe(() => {
-        this.cargando = false;
-        this.router.navigate(['/usuarios']);
+        phone: this.nuevoUsuario.phone,
+        password: this.nuevoUsuario.password,
+        rol: 'USER'
+      }).subscribe({
+        next: () => {
+          this.cargando = false;
+          this.router.navigate(['/usuarios']);
+        },
+        error: () => {
+          this.cargando = false;
+          alert('Error al crear usuario');
+        }
       });
     }
   }
