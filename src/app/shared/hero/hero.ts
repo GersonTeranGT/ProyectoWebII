@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-hero',
@@ -8,6 +9,8 @@ import { RouterLink } from '@angular/router';
   styleUrl: './hero.css',
 })
 export class Hero {
+  //inyeccion
+  public authService = inject(AuthService)
   @Input() titulo!: string;
   @Input() parrafo!: string;
   @Input() imagenFondo!: string;

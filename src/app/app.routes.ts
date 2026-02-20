@@ -7,23 +7,24 @@ import { HistorialTest } from './features/historial-test/historial-test';
 import { Test } from './features/test/test';
 import { Register } from './features/register/register';
 import { authGuard } from './guards/auth-guard';
+import { adminMatchGuard, publicMatchGuard, userMatchGuard } from './guards/match-guard';
 
 
 export const routes: Routes = [
-    // Ruta incial - Home
-    { path: '', component: Home },
+    //ruta incial - Home
+    { path: '', component: Home , canMatch:[publicMatchGuard]},
     { path: 'inicio', redirectTo: '', pathMatch: 'full' },
     
-    // Rutas públicas
+    //rutas publicas
     { path: 'login', component: Login },
     { path: 'register', component: Register },
     { path: 'register/:id', component: Register },
     
-    // Rutas protegidas con authGuard (solo usuarios autenticados)
-    { path: 'usuarios', component: Usuarios, canActivate: [authGuard] },
-    { path: 'historial-test', component: HistorialTest, canActivate: [authGuard] },
-    { path: 'test', component: Test, canActivate: [authGuard] },
+    //rutas protegidas con authGuard (solo usuarios autenticados)
+    { path: 'usuarios', component: Usuarios, canActivate: [authGuard], canMatch:[publicMatchGuard]},
+    { path: 'historial-test', component: HistorialTest, canActivate: [authGuard], canMatch:[userMatchGuard] },
+    { path: 'test', component: Test, canActivate: [authGuard], canMatch:[userMatchGuard]},
     
-    // Ruta 404
+    //ruta 404
     { path: '**', component: Pagina404 }
 ];
