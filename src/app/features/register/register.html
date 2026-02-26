@@ -58,8 +58,8 @@
                             Nombre completo
                         </span>
                     </label>
-                    <input type="text" id="name" name="name" [(ngModel)]="nuevoUsuario.name" required #name="ngModel"
-                        placeholder="Ej: Juan Pérez González" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{2,60}"
+                    <input type="text" id="nombre" name="nombre" [(ngModel)]="nuevoUsuario.nombre" required
+                        #name="ngModel" placeholder="Ej: Juan Pérez González" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{2,60}"
                         class="w-full px-4 py-3 bg-white/80 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors outline-none backdrop-blur-sm"
                         [class.border-red-500]="name.invalid && name.touched"
                         [class.border-gray-300]="!name.invalid || !name.touched">
@@ -126,7 +126,7 @@
                             Teléfono
                         </span>
                     </label>
-                    <input type="text" id="phone" name="phone" [(ngModel)]="nuevoUsuario.phone" required
+                    <input type="text" id="telefono" name="telefono" [(ngModel)]="nuevoUsuario.telefono" required
                         #phone="ngModel" placeholder="Ej: 0987654321" maxlength="10" pattern="[0-9]{10}"
                         class="w-full px-4 py-3 bg-white/80 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors outline-none backdrop-blur-sm"
                         [class.border-red-500]="phone.invalid && phone.touched"
@@ -172,7 +172,7 @@
                             Nombre de usuario
                         </span>
                     </label>
-                    <input type="text" id="username" name="username" [(ngModel)]="datosSesion.username" required
+                    <input type="text" id="username" name="username" [(ngModel)]="nuevoUsuario.username" required
                         #username="ngModel" placeholder="Ej: juanperez123" pattern="[a-zA-Z0-9_]{4,20}"
                         class="w-full px-4 py-3 bg-white/80 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors outline-none backdrop-blur-sm"
                         [class.border-red-500]="username.invalid && username.touched"
@@ -196,81 +196,85 @@
 
                 <!-- Campo: Contraseña -->
                 <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-                        <span class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            Contraseña
-                        </span>
-                    </label>
-                    <input type="password" id="password" name="password" [(ngModel)]="datosSesion.password" required
-                        #password="ngModel" placeholder="Mínimo 8 caracteres"
-                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
-                        class="w-full px-4 py-3 bg-white/80 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors outline-none backdrop-blur-sm"
-                        [class.border-red-500]="password.invalid && password.touched"
-                        [class.border-gray-300]="!password.invalid || !password.touched">
-                    @if (password.invalid && password.touched) {
-                    <div class="mt-1 text-xs text-red-600 flex items-center gap-1">
-                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        @if (password.errors?.['required']) {
-                        <span>La contraseña es obligatoria</span>
-                        }
-                        @if (password.errors?.['pattern']) {
-                        <span>Mínimo 8 caracteres: mayúscula, minúscula, número y carácter especial</span>
-                        }
-                    </div>
-                    }
-                </div>
+    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+        <span class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                    clip-rule="evenodd" />
+            </svg>
+            Contraseña {{ editando ? '(dejar en blanco para no cambiar)' : '' }}
+        </span>
+    </label>
+    <input type="password" id="password" name="password" 
+           [(ngModel)]="datosSesion.password" 
+           [required]="!editando"
+           #password="ngModel" 
+           placeholder="Mínimo 8 caracteres"
+           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+           class="w-full px-4 py-3 bg-white/80 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors outline-none backdrop-blur-sm"
+           [class.border-red-500]="password.invalid && password.touched"
+           [class.border-gray-300]="!password.invalid || !password.touched">
+    @if (password.invalid && password.touched) {
+    <div class="mt-1 text-xs text-red-600 flex items-center gap-1">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                clip-rule="evenodd" />
+        </svg>
+        @if (password.errors?.['required'] && !editando) { <!-- Solo mostrar si es requerido -->
+        <span>La contraseña es obligatoria</span>
+        }
+        @if (password.errors?.['pattern']) {
+        <span>Mínimo 8 caracteres: mayúscula, minúscula, número y carácter especial</span>
+        }
+    </div>
+    }
+</div>
 
-                <!-- Campo: Repetir contraseña -->
-                <div>
-                    <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">
-                        <span class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
+<!-- Campo: Repetir contraseña - similar -->
+<div>
+    <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">
+        <span class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd"
                                     d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
                                     clip-rule="evenodd" />
                             </svg>
-                            Repetir contraseña
-                        </span>
+                            Repetir contraseña {{ editando ? '(solo si cambias la contraseña)' : '' }}
+        </span>
                     </label>
-                    <input type="password" id="confirmPassword" name="confirmPassword"
-                        [(ngModel)]="datosSesion.confirmPassword" required #confirmPassword="ngModel"
-                        placeholder="Repite tu contraseña"
-                        class="w-full px-4 py-3 bg-white/80 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors outline-none backdrop-blur-sm"
-                        [class.border-red-500]="(confirmPassword.invalid || datosSesion.password !== datosSesion.confirmPassword) && confirmPassword.touched"
-                        [class.border-gray-300]="!confirmPassword.invalid && datosSesion.password === datosSesion.confirmPassword || !confirmPassword.touched">
-                    @if (confirmPassword.touched) {
-                    @if (confirmPassword.errors?.['required']) {
-                    <div class="mt-1 text-xs text-red-600 flex items-center gap-1">
-                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span>Debe confirmar su contraseña</span>
-                    </div>
-                    }
-                    @if (datosSesion.password !== datosSesion.confirmPassword && !confirmPassword.errors?.['required'])
-                    {
-                    <div class="mt-1 text-xs text-red-600 flex items-center gap-1">
-                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span>Las contraseñas no coinciden</span>
-                    </div>
-                    }
-                    }
-                </div>
+    <input type="password" id="confirmPassword" name="confirmPassword"
+        [(ngModel)]="datosSesion.confirmPassword" 
+        [required]="!editando"
+        #confirmPassword="ngModel"
+        placeholder="Repite tu contraseña"
+        class="w-full px-4 py-3 bg-white/80 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors outline-none backdrop-blur-sm"
+        [class.border-red-500]="(confirmPassword.invalid || datosSesion.password !== datosSesion.confirmPassword) && confirmPassword.touched"
+        [class.border-gray-300]="!confirmPassword.invalid && datosSesion.password === datosSesion.confirmPassword || !confirmPassword.touched" />
+    @if (confirmPassword.touched) {
+        @if (confirmPassword.errors?.['required'] && !editando) {
+        <div class="mt-1 text-xs text-red-600 flex items-center gap-1">
+            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                    clip-rule="evenodd" />
+            </svg>
+            <span>Debe confirmar su contraseña</span>
+        </div>
+        }
+        @if (datosSesion.password !== datosSesion.confirmPassword && datosSesion.password && datosSesion.confirmPassword) {
+        <div class="mt-1 text-xs text-red-600 flex items-center gap-1">
+            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                    clip-rule="evenodd" />
+            </svg>
+            <span>Las contraseñas no coinciden</span>
+        </div>
+        }
+    }
+</div>
             </div>
 
             <!-- Mensaje de error general -->
@@ -285,7 +289,7 @@
             <!-- Botones de acción -->
             <div class="flex flex-col sm:flex-row gap-4 pt-4">
                 <button type="submit"
-                    [disabled]="usuarioForm.invalid || datosSesion.password !== datosSesion.confirmPassword || cargando"
+                    [disabled]="usuarioForm.invalid || (datosSesion.password !== datosSesion.confirmPassword) || cargando"
                     class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg">
                     @if (cargando) {
                     <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"

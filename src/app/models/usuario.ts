@@ -1,8 +1,9 @@
 ﻿export interface Usuario {
-    id?: string;
-    name: string;
+    id?: number;
+    nombre: string;
     email: string;
-    phone: string;
+    telefono: string;
+    username: string;
     password: string;
-    rol: 'ADMIN' | 'USER';
+    rol: 'ROLE_ADMIN' | 'ROLE_USUARIO';
 }

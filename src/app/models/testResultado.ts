@@ -1,10 +1,11 @@
-﻿export interface TestResultado {
-  id: number;
-  fecha: string;
+﻿// models/test.model.ts
+export interface TestResultado {
+  id?: number;           // Opcional para nuevos
+  fecha: string;        // Opcional para nuevos
   puntuacion: number;
   nivel: 'mínima' | 'leve' | 'moderada' | 'severa';
-  recomendacion: string;
-  respuestas?: {
+  recomendacion?: string; // Opcional
+  respuestas: {
     pregunta1: number | null;
     pregunta2: number | null;
     pregunta3: number | null;

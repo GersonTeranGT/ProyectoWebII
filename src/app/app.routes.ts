@@ -11,20 +11,36 @@ import { adminMatchGuard, publicMatchGuard, userMatchGuard } from './guards/matc
 
 
 export const routes: Routes = [
-    //ruta incial - Home
-    { path: '', component: Home , canMatch:[publicMatchGuard]},
-    { path: 'inicio', redirectTo: '', pathMatch: 'full' },
-    
-    //rutas publicas
-    { path: 'login', component: Login },
-    { path: 'register', component: Register },
-    { path: 'register/:id', component: Register },
-    
-    //rutas protegidas con authGuard (solo usuarios autenticados)
-    { path: 'usuarios', component: Usuarios, canActivate: [authGuard], canMatch:[publicMatchGuard]},
-    { path: 'historial-test', component: HistorialTest, canActivate: [authGuard], canMatch:[userMatchGuard] },
-    { path: 'test', component: Test, canActivate: [authGuard], canMatch:[userMatchGuard]},
-    
-    //ruta 404
-    { path: '**', component: Pagina404 }
+    // Ruta inicial - Home (pública)
+  { path: '', component: Home },
+  { path: 'inicio', redirectTo: '', pathMatch: 'full' },
+  
+  { path: 'register/:id', component: Register, canMatch: [authGuard] }, // canMatch, no canActivate
+  // Rutas públicas
+  { path: 'login', component: Login, canMatch: [publicMatchGuard] },
+  { path: 'register', component: Register, canMatch: [publicMatchGuard] },
+  
+  
+  // Rutas SOLO para usuarios normales (NO admin)
+  { 
+    path: 'test', 
+    component: Test, 
+    canMatch: [userMatchGuard] // Usando canMatch
+  },
+  { 
+    path: 'historial-test', 
+    component: HistorialTest, 
+    canMatch: [userMatchGuard] // Usando canMatch
+  },
+  
+  // Ruta de usuarios - SOLO admin
+  { 
+    path: 'usuarios', 
+    component: Usuarios, 
+    canMatch: [publicMatchGuard] // Usando canMatch
+  },
+  
+  // Ruta 404
+  { path: '**', component: Pagina404 }
+
 ];

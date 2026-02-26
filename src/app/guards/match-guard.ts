@@ -2,55 +2,62 @@ import { inject } from '@angular/core';
 import { CanMatchFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth-service';
 
+// Guard para rutas públicas (login, register)
 export const publicMatchGuard: CanMatchFn = (route, segments) => {
-  //inyeccion del auth
   const authService = inject(AuthService);
-  //inyeccion para redireccion
-  const router = inject(Router)
+  const router = inject(Router);
 
-  //verificamos si nos hay sesion iniciada
-  if (!authService.sesionIniciada()) {
-    if (route.path === 'login' || route.path === 'register') {
-      return router.parseUrl('test')
+  // Verificar si la ruta actual es exactamente 'register' o 'login' (sin parámetros)
+  const path = route.path;
+  
+  // Si el usuario está autenticado y trata de entrar a login o register
+  if (authService.sesionIniciada() && (path === 'login' || path === 'register')) {
+    // Redirigir según el rol
+    if (authService.esAdmin()) {
+      return router.parseUrl('usuarios');
+    } else {
+      return router.parseUrl('test');
     }
   }
+
+  // Si no está autenticado o no es login/register, puede ver la ruta
   return true;
 };
 
-//rutas solo para usuarios
+// Guard para rutas de usuarios normales
 export const userMatchGuard: CanMatchFn = (route, segments) => {
-  //inyecciones
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  //verificamos si hay sesion 
+  // Verificar si hay sesión iniciada
   if (!authService.sesionIniciada()) {
     return router.parseUrl('login');
   }
 
-  //rutas accesibles solo para el usuario
-  if (authService.rolActual() === 'USER') {
+  // Usuario normal puede acceder
+  if (authService.rolActual() === 'ROLE_USUARIO') {
     return true;
   }
-  return false;
+
+  // Admin no puede acceder a rutas de usuario
+  return router.parseUrl('usuarios');
 };
 
-//rutas solo para usuarios
+// Guard para rutas de administrador
 export const adminMatchGuard: CanMatchFn = (route, segments) => {
-  //inyecciones
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  //verificamos si hay sesion
+  // Verificar si hay sesión iniciada
   if (!authService.sesionIniciada()) {
     return router.parseUrl('login');
   }
 
-  //rutas que solo el administrador puede ver
-  if (authService.rolActual() === 'ADMIN') {
+  // Admin puede acceder
+  if (authService.rolActual() === 'ROLE_ADMIN') {
     return true;
   }
 
-  //si es USER redirigimos a test
+  // Usuario normal no puede acceder a rutas de admin
   return router.parseUrl('test');
 };

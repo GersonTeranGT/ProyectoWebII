@@ -11,7 +11,7 @@
             @if (authService.sesionIniciada()) {
             <div class="flex items-center gap-4">
                 <span class="text-sm text-white bg-emerald-700 px-3 py-1 rounded-full">
-                    {{ authService.rolActual() === 'ADMIN' ? 'ADMINISTRADOR' : 'USUARIO' }}
+                    {{ authService.rolActual() === 'ROLE_ADMIN' ? 'ADMINISTRADOR' : 'ROLE_USUARIO' }}
                 </span>
                 <button (click)="cerrarSesion()"
                     class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-2 px-4 rounded-lg transition-colors">
@@ -57,7 +57,7 @@
 
                     <!-- Tabla usuarios - siempre visible (el guard protegerá) -->
                     <li>
-                        @if (authService.rolActual() === 'ADMIN' || authService.rolActual() === 'USER') {
+                        @if (authService.rolActual() === 'ROLE_ADMIN' || authService.rolActual() === 'ROLE_USUARIO') {
                         <a routerLink="/usuarios"
                             class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 transition-colors duration-200 hover:underline"
                             routerLinkActive="text-blue-700 font-semibold">Usuarios</a>
@@ -75,7 +75,7 @@
                             routerLinkActive="text-blue-700 font-semibold">Test</a>
                     </li>
                     <li>
-                        <a routerLink="/historial-test"
+                        <a routerLink="historial-test"
                             class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 transition-colors duration-200 hover:underline"
                             routerLinkActive="text-blue-700 font-semibold">Historial test</a>
                     </li>
