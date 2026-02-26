@@ -7,23 +7,26 @@
     </div>
 
     <!--contenedor del historial-->
-    <div class="relative z-10 w-full max-w-6xl bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/30">
-        
+    <div
+        class="relative z-10 w-full max-w-6xl bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/30">
+
         <!--boton Volver al inicio y Recargar-->
         <div class="flex justify-between items-center mb-6">
-            <a routerLink="/" class="inline-flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-emerald-700 transition-colors">
+            <a routerLink="/"
+                class="inline-flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-emerald-700 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
                 </svg>
                 Volver al inicio
             </a>
-            
+
             <!-- BOTÓN DE RECARGAR -->
-            <button (click)="recargarHistorial()" 
+            <button (click)="recargarHistorial()"
                 class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-lg transition-colors text-sm font-medium"
                 title="Recargar historial">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
                 Recargar
             </button>
@@ -33,7 +36,7 @@
         <div class="text-center mb-8">
             <div class="inline-flex p-3 rounded-full bg-emerald-100 mb-4">
                 <svg class="w-12 h-12 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                         d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
             </div>
@@ -47,7 +50,8 @@
                 <div class="flex items-center gap-3">
                     <div class="p-2 bg-emerald-100 rounded-lg">
                         <svg class="w-6 h-6 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
                     </div>
                     <div>
@@ -61,7 +65,8 @@
                 <div class="flex items-center gap-3">
                     <div class="p-2 bg-emerald-100 rounded-lg">
                         <svg class="w-6 h-6 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                     <div>
@@ -75,7 +80,8 @@
                 <div class="flex items-center gap-3">
                     <div class="p-2 bg-emerald-100 rounded-lg">
                         <svg class="w-6 h-6 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                     </div>
                     <div>
@@ -91,14 +97,15 @@
             <div class="flex-1 relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </div>
                 <input type="text" [(ngModel)]="filtroBusqueda" (ngModelChange)="filtrarHistorial()"
                     placeholder="Buscar por fecha o nivel de ansiedad..."
                     class="w-full pl-10 pr-4 py-3 bg-white/80 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors outline-none backdrop-blur-sm">
             </div>
-            
+
             <select [(ngModel)]="filtroNivel" (ngModelChange)="filtrarHistorial()"
                 class="px-4 py-3 bg-white/80 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors outline-none backdrop-blur-sm">
                 <option value="">Todos los niveles</option>
@@ -126,8 +133,10 @@
                     <tr class="border-b border-gray-200 hover:bg-emerald-50/50 transition-colors">
                         <td class="px-6 py-4 font-medium">
                             <div class="flex items-center gap-2">
-                                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                                 {{ test.fecha }}
                             </div>
@@ -138,7 +147,8 @@
                             </span>
                         </td>
                         <td class="px-6 py-4">
-                            <span [class]="getNivelClass(test.nivel)" class="px-3 py-1 rounded-full text-sm font-medium">
+                            <span [class]="getNivelClass(test.nivel)"
+                                class="px-3 py-1 rounded-full text-sm font-medium">
                                 {{ test.nivel }}
                             </span>
                         </td>
@@ -147,12 +157,22 @@
                         </td>
                         <td class="px-6 py-4 text-center">
                             <div class="flex items-center justify-center gap-2">
-                                <button (click)="verDetalle(test)" 
+                                <button (click)="verDetalle(test)"
                                     class="p-2 text-emerald-700 hover:bg-emerald-100 rounded-lg transition-colors"
                                     title="Ver detalles">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                </button>
+                                <button (click)="imprimirTest(test)"
+                                    class="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors"
+                                    title="Imprimir resultados">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                                     </svg>
                                 </button>
                                 <!-- <button (click)="eliminarRegistro(test)" 
@@ -169,11 +189,13 @@
                     <tr>
                         <td colspan="5" class="px-6 py-12 text-center">
                             <div class="flex flex-col items-center gap-3">
-                                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
                                 <p class="text-gray-500 font-medium">No hay tests registrados</p>
-                                <a routerLink="/test" 
+                                <a routerLink="/test"
                                     class="mt-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm">
                                     Realizar primer test
                                 </a>
@@ -189,25 +211,26 @@
         @if (historialFiltrado.length > 0) {
         <div class="flex items-center justify-between mt-6">
             <p class="text-sm text-gray-600">
-                Mostrando <span class="font-semibold">{{ (paginaActual - 1) * itemsPorPagina + 1 }}</span> 
-                a <span class="font-semibold">{{ Math.min(paginaActual * itemsPorPagina, historialFiltrado.length) }}</span> 
+                Mostrando <span class="font-semibold">{{ (paginaActual - 1) * itemsPorPagina + 1 }}</span>
+                a <span class="font-semibold">{{ Math.min(paginaActual * itemsPorPagina, historialFiltrado.length)
+                    }}</span>
                 de <span class="font-semibold">{{ historialFiltrado.length }}</span> resultados
             </p>
-            
+
             <div class="flex gap-2">
                 <button (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1"
                     class="px-4 py-2 border border-gray-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-emerald-50 hover:border-emerald-300 transition-colors">
                     Anterior
                 </button>
-                
+
                 @for (pagina of paginas; track pagina) {
-                <button (click)="cambiarPagina(pagina)" 
+                <button (click)="cambiarPagina(pagina)"
                     [class]="pagina === paginaActual ? 'bg-emerald-600 text-white border-emerald-600' : 'border-gray-300 hover:bg-emerald-50'"
                     class="px-4 py-2 border rounded-lg text-sm transition-colors">
                     {{ pagina }}
                 </button>
                 }
-                
+
                 <button (click)="cambiarPagina(paginaActual + 1)" [disabled]="paginaActual === totalPaginas"
                     class="px-4 py-2 border border-gray-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-emerald-50 hover:border-emerald-300 transition-colors">
                     Siguiente
