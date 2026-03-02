@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login implements OnInit{
+export class Login implements OnInit {
 
   anio: number = new Date().getFullYear();
 
@@ -32,7 +32,7 @@ export class Login implements OnInit{
   ngOnInit() {
     // Verificar si ya hay sesión activa
     if (this.authService.sesionIniciada()) {
-      this.router.navigate(['']); // Redirigir al home si ya está logueado
+      this.redirigirSegunRol(); // <-- USAR MÉTODO DE REDIRECCIÓN
       return;
     }
 
@@ -94,7 +94,7 @@ export class Login implements OnInit{
             timer: 2000,
             showConfirmButton: false
           }).then(() => {
-            this.router.navigate(['']); // Redirigir al home
+            this.redirigirSegunRol(); // <-- USAR MÉTODO DE REDIRECCIÓN
           });
         }
       },
@@ -104,7 +104,6 @@ export class Login implements OnInit{
 
         let mensajeError = 'Error al conectar con el servidor';
         
-        // Manejar diferentes tipos de error
         if (error.status === 401) {
           mensajeError = 'Usuario o contraseña incorrectos';
         } else if (error.status === 0) {
@@ -122,4 +121,12 @@ export class Login implements OnInit{
     });
   }
 
+  // NUEVO MÉTODO PARA REDIRECCIÓN SEGÚN ROL
+  private redirigirSegunRol() {
+    if (this.authService.esAdmin()) {
+      this.router.navigate(['/usuarios']); // Admin va a usuarios
+    } else {
+      this.router.navigate(['/test']); // Usuario va a test
+    }
+  }
 }
