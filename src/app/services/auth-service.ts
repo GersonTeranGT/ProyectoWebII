@@ -12,13 +12,12 @@ export class AuthService {
   private http = inject(HttpClient);
   private API_URL = 'http://localhost:8080/api/auth/login';
 
-  // Usamos señales que se actualizarán automáticamente
   sesionIniciada = signal<boolean>(this.getSesionInicial());
   usuarioActual = signal<any>(this.getUsuarioInicial());
   rolActual = signal<string | null>(this.getRolInicial());
 
   private getSesionInicial(): boolean {
-    return localStorage.getItem('sesion') === 'true';
+    return !!localStorage.getItem('token'); // <-- CAMBIADO: verifica token
   }
 
   private getUsuarioInicial(): any {
@@ -33,9 +32,9 @@ export class AuthService {
   login(email: string, password: string): Observable<boolean> {
     return this.http.post<any>(this.API_URL, { email, password }).pipe(
       tap(response => {
-        if (response && response.id) {
-          // Guardar en localStorage
-          localStorage.setItem('sesion', 'true');
+        if (response && response.token) {
+          // Guardar token y datos del usuario
+          localStorage.setItem('token', response.token);
           localStorage.setItem('user', JSON.stringify(response));
           localStorage.setItem('rol', response.rol);
           
@@ -44,15 +43,15 @@ export class AuthService {
           this.usuarioActual.set(response);
           this.rolActual.set(response.rol);
           
-          console.log('Rol actualizado a:', response.rol); // Debug
+          console.log('✅ Login exitoso, token guardado');
         }
       }),
-      map(response => !!(response && response.id))
+      map(response => !!(response && response.token))
     );
   }
 
   logout() {
-    localStorage.removeItem('sesion');
+    localStorage.removeItem('token'); // <-- ELIMINAR TOKEN
     localStorage.removeItem('user');
     localStorage.removeItem('rol');
     this.sesionIniciada.set(false);
@@ -66,5 +65,9 @@ export class AuthService {
 
   estaAutenticado(): boolean {
     return this.sesionIniciada();
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 }
