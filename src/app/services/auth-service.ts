@@ -29,6 +29,18 @@ export class AuthService {
     return localStorage.getItem('rol');
   }
 
+  // En auth.service.ts
+
+debugAuthState() {
+    console.log('=== DEBUG AUTH STATE ===');
+    console.log('Token:', this.getToken());
+    console.log('Usuario actual signal:', this.usuarioActual());
+    console.log('Usuario desde localStorage:', localStorage.getItem('user'));
+    console.log('Rol actual:', this.rolActual());
+    console.log('Sesión iniciada:', this.sesionIniciada());
+    console.log('========================');
+}
+
   login(email: string, password: string): Observable<boolean> {
     return this.http.post<any>(this.API_URL, { email, password }).pipe(
       tap(response => {
