@@ -50,10 +50,10 @@ export class TablaTest implements OnInit {
   Math = Math;
 
   // Método para calcular el nivel según la puntuación
-  calcularNivelPorPuntuacion(puntuacion: number): "mínima" | "leve" | "moderada" | "severa" {
-    if (puntuacion <= 5) return 'mínima';
+  calcularNivelPorPuntuacion(puntuacion: number): "leve" | "moderada" | "severa" {
     if (puntuacion <= 10) return 'leve';
-    if (puntuacion <= 15) return 'moderada';
+    if (puntuacion <= 20) return 'moderada';
+    if (puntuacion <= 30) return 'severa';
     return 'severa';
   }
 
