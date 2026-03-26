@@ -10,19 +10,47 @@ export class TestService {
   private http = inject(HttpClient);
   private API_URL = 'http://localhost:8080/api/tests';
 
-  // Obtener historial de tests por usuario
-  obtenerHistorial(id: number): Observable<TestResultado[]> {
+  // 🔹 MÉTODO MODIFICADO: Ahora devuelve { tests: TestResultado[], resumen: any }
+  obtenerHistorial(id: number): Observable<{ tests: TestResultado[]; resumen: any }> {
     console.log('📡 Solicitando historial para usuario:', id);
-    return this.http.get<any[]>(`${this.API_URL}/historial-test/${id}`).pipe(
-      map(tests => {
-      console.log('📦 Datos recibidos del backend:', tests);
-      const mapeados = tests.map(test => this.mapearTest(test));
-      console.log('✅ Datos mapeados:', mapeados);
-      return mapeados;
-    })
+    return this.http.get<any>(`${this.API_URL}/historial-test/${id}`).pipe(
+      map(response => {
+        console.log('📦 Datos recibidos del backend:', response);
+        
+        // 1. Procesar la lista de tests
+        const testsMapeados = response.tests.map((test: any) => this.mapearTest(test));
+        console.log('✅ Tests mapeados:', testsMapeados);
+        
+        // 2. Procesar el resumen del procedimiento
+        const resumen = {
+          totalTests: response.resumen?.totalTests || 0,
+          promedioPuntuacion: response.resumen?.promedioPuntuacion || 0,
+          ultimoNivel: response.resumen?.ultimoNivel || 'Sin tests',
+          mensaje: response.resumen?.mensaje || this.generarMensajePorDefecto(response.resumen?.totalTests)
+        };
+        
+        console.log('📊 Resumen del procedimiento:', resumen);
+        
+        // 3. Retornar ambos
+        return {
+          tests: testsMapeados,
+          resumen: resumen
+        };
+      })
     );
   }
 
+  // 🔹 MÉTODO ADICIONAL: Para obtener solo el resumen (opcional, por si lo necesitas)
+  obtenerResumen(id: number): Observable<any> {
+    return this.http.get<any>(`${this.API_URL}/resumen/${id}`).pipe(
+      map(resumen => ({
+        totalTests: resumen.totalTests || 0,
+        promedioPuntuacion: resumen.promedioPuntuacion || 0,
+        ultimoNivel: resumen.ultimoNivel || 'Sin tests',
+        mensaje: resumen.mensaje || this.generarMensajePorDefecto(resumen.totalTests)
+      }))
+    );
+  }
   
   // Obtener un test por ID
   obtenerTestPorId(id: number): Observable<TestResultado> {
@@ -30,18 +58,27 @@ export class TestService {
       map(test => this.mapearTest(test))
     );
   }
+  
   guardarTest(testData: any): Observable<any> {
-  return this.http.post(`${this.API_URL}/guardar`, testData);
-}
+    return this.http.post(`${this.API_URL}/guardar`, testData);
+  }
+
+  // 🔹 MÉTODO AUXILIAR: Generar mensaje por defecto si no viene del backend
+  private generarMensajePorDefecto(totalTests: number): string {
+    if (totalTests === 0) {
+      return "📝 Aún no has realizado ningún test. ¡Realiza tu primera evaluación para conocer tu nivel de ansiedad!";
+    }
+    return "Continúa monitoreando tu salud mental. Cada test te ayuda a conocer mejor tu evolución.";
+  }
+
   // Mapear test del backend a nuestro modelo
   private mapearTest(test: any): TestResultado {
     // 1. MANEJO DE FECHA - CON VALIDACIONES
-    let fechaFormateada = '--/--/----'; // Valor por defecto
+    let fechaFormateada = '--/--/----';
 
     if (test.fechaRealizacion) {
       try {
         const fecha = new Date(test.fechaRealizacion);
-        // Verificar que la fecha sea válida
         if (!isNaN(fecha.getTime())) {
           fechaFormateada = `${fecha.getDate().toString().padStart(2, '0')}/${(fecha.getMonth() + 1).toString().padStart(2, '0')}/${fecha.getFullYear()}`;
         }
@@ -50,10 +87,10 @@ export class TestService {
       }
     }
 
-    // 2. MANEJO DE PUNTUACIÓN - VALOR POR DEFECTO
+    // 2. MANEJO DE PUNTUACIÓN
     const puntuacionTotal = test.puntuacionTotal || 0;
 
-    // 3. MANEJO DE NIVEL - CON VALIDACIÓN
+    // 3. MANEJO DE NIVEL
     let nivel = test.nivelAnsiedad?.toLowerCase();
     if (!nivel) {
       const interpretacion = INTERPRETACIONES.find(i => puntuacionTotal <= i.max) ||
@@ -61,10 +98,9 @@ export class TestService {
       nivel = interpretacion.nivel;
     }
 
-    // 4. ASEGURAR QUE EL NIVEL SEA UNO DE LOS VALORES PERMITIDOS
+    // 4. VALIDAR NIVEL
     const nivelesPermitidos = ['mínima', 'leve', 'moderada', 'severa'];
     if (!nivelesPermitidos.includes(nivel)) {
-      // Si el nivel no es válido, calcularlo basado en puntuación
       const interpretacion = INTERPRETACIONES.find(i => puntuacionTotal <= i.max) ||
         INTERPRETACIONES[INTERPRETACIONES.length - 1];
       nivel = interpretacion.nivel;
@@ -73,15 +109,15 @@ export class TestService {
     // 5. OBTENER RECOMENDACIÓN
     const recomendacion = this.obtenerRecomendacion(puntuacionTotal);
 
-    // 6. RETORNAR OBJETO CON TODOS LOS CAMPOS VALIDADOS
+    // 6. RETORNAR OBJETO
     return {
       id: test.id,
-      fecha: fechaFormateada, // Siempre string, nunca undefined
+      fecha: fechaFormateada,
       puntuacion: puntuacionTotal,
       nivel: nivel as 'mínima' | 'leve' | 'moderada' | 'severa',
       recomendacion: recomendacion,
       respuestas: {
-        pregunta1: test.pregunta1 ?? null, // Si es null o undefined, asigna null
+        pregunta1: test.pregunta1 ?? null,
         pregunta2: test.pregunta2 ?? null,
         pregunta3: test.pregunta3 ?? null,
         pregunta4: test.pregunta4 ?? null,
@@ -97,9 +133,7 @@ export class TestService {
 
   // Obtener recomendación basada en puntuación
   private obtenerRecomendacion(puntuacion: number): string {
-    // Asegurar que puntuación es un número válido
     const puntuacionValida = isNaN(puntuacion) ? 0 : puntuacion;
-
     for (const interp of INTERPRETACIONES) {
       if (puntuacionValida <= interp.max) {
         return interp.mensaje;

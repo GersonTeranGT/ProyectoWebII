@@ -5,11 +5,12 @@ import { TestResultado } from '../../models/testResultado';
 import Swal from 'sweetalert2';
 import { TestService } from '../../services/test-service';
 import { AuthService } from '../../services/auth-service';
+import { CommonModule, DecimalPipe } from '@angular/common';
 
 
 @Component({
   selector: 'app-tabla-test',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, DecimalPipe, CommonModule],
   templateUrl: './tabla-test.html',
   styleUrl: './tabla-test.css',
 })
@@ -21,35 +22,37 @@ export class TablaTest implements OnInit {
   ngOnInit() {
     this.cargarHistorial();
     this.route.params.subscribe(() => {
-      // Cada vez que los parámetros cambien, recargar
+      //Cada vez que los parametros cambien, recargar
       this.cargarHistorial();
     });
   }
 
-  // Datos
+  //datos
   historialCompleto: TestResultado[] = [];
   historialFiltrado: TestResultado[] = [];
   cargando = true;
 
+  //resumen que viene del BACKEND (procedimiento almacenado)
+  resumenBackend: any = null;
   // Estadísticas
-  totalTests = 0;
-  ultimoTestFecha = '--/--/----';
-  promedioPuntuacion = '0';
+  // totalTests = 0;
+  // ultimoTestFecha = '--/--/----';
+  // promedioPuntuacion = '0';
 
-  // Filtros
+  //Filtros
   filtroBusqueda = '';
   filtroNivel = '';
 
-  // Paginación
+  //Paginacion
   paginaActual = 1;
   itemsPorPagina = 5;
   totalPaginas = 1;
   paginas: number[] = [];
 
-  // Math para usar en template
+  //Math para usar en template
   Math = Math;
 
-  // Método para calcular el nivel según la puntuación
+  //Metodo para calcular el nivel segun la puntuacion
   calcularNivelPorPuntuacion(puntuacion: number): "leve" | "moderada" | "severa" {
     if (puntuacion <= 10) return 'leve';
     if (puntuacion <= 20) return 'moderada';
@@ -63,71 +66,117 @@ export class TablaTest implements OnInit {
 
     if (!usuarioActual?.id) {
       console.error('❌ No hay usuario autenticado');
+      this.cargando = false;
+      // Establecer valores por defecto
+      this.resumenBackend = {
+        totalTests: 0,
+        promedioPuntuacion: 0,
+        ultimoNivel: 'Sin tests',
+        mensaje: 'Inicia sesión para ver tu historial'
+      };
+      this.historialCompleto = [];
+      this.historialFiltrado = [];
       return;
     }
 
     this.cargando = true;
 
     this.testService.obtenerHistorial(usuarioActual.id).subscribe({
-      next: (tests) => {
-        console.log('📊 Tests recibidos en componente:', tests);
+      next: (response) => {
+        console.log('📊 Respuesta completa:', response);
 
-        const testsCorregidos: TestResultado[] = tests.map(test => ({
-          ...test,
-          nivel: this.calcularNivelPorPuntuacion(test.puntuacion)
-        }));
+        // Validar que response existe
+        if (!response) {
+          console.warn('⚠️ Respuesta vacía');
+          this.resumenBackend = {
+            totalTests: 0,
+            promedioPuntuacion: 0,
+            ultimoNivel: 'Sin tests',
+            mensaje: 'No hay datos disponibles'
+          };
+          this.historialCompleto = [];
+          this.historialFiltrado = [];
+          this.cargando = false;
+          return;
+        }
 
-        this.historialCompleto = testsCorregidos;
-        this.historialFiltrado = [...testsCorregidos];
+        // Procesar resumen
+        this.resumenBackend = {
+          totalTests: response.resumen?.totalTests ?? 0,
+          promedioPuntuacion: response.resumen?.promedioPuntuacion ?? 0,
+          ultimoNivel: response.resumen?.ultimoNivel ?? 'Sin tests',
+          mensaje: response.resumen?.mensaje ?? '📝 Realiza tu primer test para ver tu progreso'
+        };
 
-        console.log('📋 Tests corregidos:', this.historialCompleto);
+        // Procesar tests
+        this.historialCompleto = Array.isArray(response.tests) ? response.tests : [];
+        this.historialFiltrado = [...this.historialCompleto];
 
-        this.calcularEstadisticas();
+        console.log('📋 Tests:', this.historialCompleto.length);
+        console.log('📊 Resumen:', this.resumenBackend);
+
         this.actualizarPaginacion();
         this.cargando = false;
       },
       error: (error) => {
         console.error('❌ Error:', error);
+
+        // Establecer valores por defecto en caso de error
+        this.resumenBackend = {
+          totalTests: 0,
+          promedioPuntuacion: 0,
+          ultimoNivel: 'Error',
+          mensaje: 'Error al cargar las estadísticas. Por favor, recarga la página.'
+        };
+        this.historialCompleto = [];
+        this.historialFiltrado = [];
         this.cargando = false;
+
+        // Mostrar mensaje de error
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de conexión',
+          text: 'No se pudo cargar el historial. Verifica que el servidor esté funcionando.'
+        });
       }
     });
   }
 
-  calcularEstadisticas() {
-    this.totalTests = this.historialCompleto.length;
+  // calcularEstadisticas() {
+  //   this.totalTests = this.historialCompleto.length;
 
-    if (this.totalTests > 0) {
-      // Ordenar por fecha para obtener el más reciente
-      const testsOrdenados = [...this.historialCompleto].sort((a, b) => {
-        // Asegurar que ambas fechas existen
-        if (!a.fecha || !b.fecha) return 0;
-        return this.convertirFecha(b.fecha).getTime() - this.convertirFecha(a.fecha).getTime();
-      });
+  //   if (this.totalTests > 0) {
+  // Ordenar por fecha para obtener el más reciente
+  //     const testsOrdenados = [...this.historialCompleto].sort((a, b) => {
+  //       // Asegurar que ambas fechas existen
+  //       if (!a.fecha || !b.fecha) return 0;
+  //       return this.convertirFecha(b.fecha).getTime() - this.convertirFecha(a.fecha).getTime();
+  //     });
 
-      // Obtener la fecha del primer elemento si existe
-      if (testsOrdenados.length > 0 && testsOrdenados[0].fecha) {
-        this.ultimoTestFecha = testsOrdenados[0].fecha;
-      }
+  // Obtener la fecha del primer elemento si existe
+  //     if (testsOrdenados.length > 0 && testsOrdenados[0].fecha) {
+  //       this.ultimoTestFecha = testsOrdenados[0].fecha;
+  //     }
 
-      const suma = this.historialCompleto.reduce((acc, test) => acc + test.puntuacion, 0);
-      const promedio = suma / this.totalTests;
-      this.promedioPuntuacion = promedio.toFixed(1);
-    }
-  }
+  //     const suma = this.historialCompleto.reduce((acc, test) => acc + test.puntuacion, 0);
+  //     const promedio = suma / this.totalTests;
+  //     this.promedioPuntuacion = promedio.toFixed(1);
+  //   }
+  // }
 
-  private convertirFecha(fechaStr: string): Date {
-    if (!fechaStr || fechaStr === '--/--/----') {
-      return new Date(0);
-    }
+  // private convertirFecha(fechaStr: string): Date {
+  //   if (!fechaStr || fechaStr === '--/--/----') {
+  //     return new Date(0);
+  //   }
 
-    try {
-      const [dia, mes, año] = fechaStr.split('/').map(Number);
-      return new Date(año, mes - 1, dia);
-    } catch (error) {
-      console.error('Error al convertir fecha:', fechaStr);
-      return new Date(0);
-    }
-  }
+  //   try {
+  //     const [dia, mes, año] = fechaStr.split('/').map(Number);
+  //     return new Date(año, mes - 1, dia);
+  //   } catch (error) {
+  //     console.error('Error al convertir fecha:', fechaStr);
+  //     return new Date(0);
+  //   }
+  // }
 
   filtrarHistorial() {
     this.aplicarFiltros();
@@ -298,6 +347,10 @@ export class TablaTest implements OnInit {
       })
       .join('');
 
+    //USAR EL RESUMEN DEL BACKEND PARA LAS ESTADISTICAS
+    const totalTestsMostrar = this.resumenBackend?.totalTests || this.historialCompleto.length;
+    const promedioMostrar = this.resumenBackend?.promedioPuntuacion?.toFixed(1) || '0';
+
     // Crear el contenido HTML para imprimir
     const contenidoImpresion = `
         <!DOCTYPE html>
@@ -387,6 +440,7 @@ export class TablaTest implements OnInit {
                     color: #10b981;
                     line-height: 1.2;
                 }
+                .promedio-info { background: #f3f4f6; padding: 15px; margin: 20px 30px; border-radius: 8px; text-align: center; }
                 
                 /* Badge de nivel */
                 .nivel-badge {
@@ -593,6 +647,8 @@ export class TablaTest implements OnInit {
                     </div>
                 </div>
 
+                
+
                 <!-- Recomendación Principal -->
                 <div class="recomendacion">
                     <strong>🔍 RECOMENDACIÓN PRINCIPAL</strong>
@@ -617,19 +673,27 @@ export class TablaTest implements OnInit {
                     </table>
                 </div>
 
+                
+
                 <!-- Interpretación Detallada -->
                 <div class="interpretacion">
                 <strong>📌 INTERPRETACIÓN CLÍNICA</strong>
                   <p style="font-size: 15px; color: #374151; line-height: 1.7;">
-                   ${this.obtenerInterpretacionCompleta(nivelCorrecto, test.puntuacion)}
+                  ${this.obtenerInterpretacionCompleta(nivelCorrecto, test.puntuacion)}
                   </p>
+                </div>
+
+                <div class="promedio-info">
+                  <strong>📊 TU PROGRESO GENERAL</strong>
+                  <p style="margin-top: 8px;">Promedio de puntuación: <strong>${promedioMostrar}</strong> puntos</p>
+                  <p style="font-size: 14px;">Basado en ${totalTestsMostrar} test(s) realizados</p>
                 </div>
                 <!-- Footer -->
                 <div class="footer">
                     <p class="confidencial">⚕️ DOCUMENTO CONFIDENCIAL ⚕️</p>
                     <p>Este informe ha sido generado por el Sistema de Evaluación de Ansiedad</p>
                     <p>Los resultados son orientativos y no sustituyen una evaluación profesional</p>
-                    <p style="margin-top: 10px;">© 2024 - Proyecto Web II - Todos los derechos reservados</p>
+                    <p style="margin-top: 10px;">© ${this.anio} - CureStress - Todos los derechos reservados</p>
                 </div>
             </div>
 
@@ -650,4 +714,5 @@ export class TablaTest implements OnInit {
     }, 2000);
 
   }
+  anio: number = new Date().getFullYear();
 }
