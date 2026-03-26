@@ -4,14 +4,14 @@
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <a routerLink="/inicio" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <img src="images/pruebaEstres.png" class="h-7" alt="CureStress Logo" />
-                <span class="self-center text-xl font-semibold whitespace-nowrap text-white">CureStress</span>
+                <span class="hover:text-emerald-300 self-center text-xl font-semibold whitespace-nowrap text-white">CureStress</span>
             </a>
 
             <!-- Botón de cerrar sesión y rol (visible solo si está autenticado) -->
             @if (authService.sesionIniciada()) {
             <div class="flex items-center gap-4">
                 <span class="text-sm text-white bg-emerald-700 px-3 py-1 rounded-full">
-                    {{ authService.rolActual() === 'ROLE_ADMIN' ? 'ADMINISTRADOR' : 'ROLE_USUARIO' }}
+                    {{ authService.rolActual() === 'ROLE_ADMIN' ? 'ADMINISTRADOR' : 'USUARIO' }}
                 </span>
                 <button (click)="cerrarSesion()"
                     class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-2 px-4 rounded-lg transition-colors">
@@ -49,17 +49,17 @@
                     <li>
                         
                         <a routerLink="/inicio"
-                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 transition-colors duration-200 hover:underline"
+                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-500 md:p-0 transition-colors duration-200 hover:underline"
                             routerLinkActive="text-blue-700 font-semibold"
                             [routerLinkActiveOptions]="{exact: true}">Home</a>
                         
                     </li>
 
-                    <!-- Tabla usuarios - siempre visible (el guard protegerá) -->
+                    <!-- Tabla usuarios - siempre visible (el guard protege) -->
                     <li>
                         @if (authService.rolActual() === 'ROLE_ADMIN' || authService.rolActual() === 'ROLE_USUARIO') {
                         <a routerLink="/usuarios"
-                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 transition-colors duration-200 hover:underline"
+                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-500 md:p-0 transition-colors duration-200 hover:underline"
                             routerLinkActive="text-blue-700 font-semibold">Usuarios</a>
                         }
                     </li>
@@ -71,12 +71,12 @@
                     <li>
 
                         <a routerLink="/test"
-                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 transition-colors duration-200 hover:underline"
+                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-500 md:p-0 transition-colors duration-200 hover:underline"
                             routerLinkActive="text-blue-700 font-semibold">Test</a>
                     </li>
                     <li>
                         <a routerLink="historial-test"
-                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 transition-colors duration-200 hover:underline"
+                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-500 md:p-0 transition-colors duration-200 hover:underline"
                             routerLinkActive="text-blue-700 font-semibold">Historial test</a>
                     </li>
 
