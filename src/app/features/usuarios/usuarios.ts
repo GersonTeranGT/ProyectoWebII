@@ -81,10 +81,10 @@ export class Usuarios {
         console.log('Comparando IDs:', idUsuarioEditar, '===', idUsuarioActual);
         
         if (idUsuarioEditar === idUsuarioActual) {
-            console.log('✅ Usuario editando su propio perfil - permitir');
+            console.log('Usuario editando su propio perfil - permitir');
             this.router.navigate(['/register', usuario.id]);
         } else {
-            console.error('❌ Intento de editar otro perfil:', {
+            console.error('Intento de editar otro perfil:', {
                 intentaEditar: idUsuarioEditar,
                 usuarioActual: idUsuarioActual
             });
@@ -95,14 +95,14 @@ export class Usuarios {
             });
         }
     } else if (rolActual === 'ROLE_ADMIN') {
-        console.log('⚠️ Administrador intentando editar usuario');
+        console.log('Administrador intentando editar usuario');
         Swal.fire({
             icon: 'error',
             title: 'Acceso denegado',
             text: 'Los administradores no pueden editar usuarios'
         });
     } else {
-        console.error('❌ Rol no reconocido:', rolActual);
+        console.error('Rol no reconocido:', rolActual);
         Swal.fire({
             icon: 'error',
             title: 'Error de autenticación',
@@ -134,7 +134,7 @@ export class Usuarios {
         this.usuarioServicios.deleteUsuario(id).subscribe({
           next: () => {
             Swal.fire('Eliminado', 'Usuario eliminado correctamente', 'success');
-            this.cargarUsuarios(); // Recargar la lista
+            this.cargarUsuarios();
           },
           error: (error) => {
             console.error('Error al eliminar:', error);
