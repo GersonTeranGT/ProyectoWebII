@@ -1,10 +1,10 @@
 ﻿// models/test.model.ts
 export interface TestResultado {
-  id?: number;           // Opcional para nuevos
-  fecha: string;        // Opcional para nuevos
+  id?: number;
+  fecha: string;
   puntuacion: number;
   nivel: 'mínima' | 'leve' | 'moderada' | 'severa';
-  recomendacion?: string; // Opcional
+  recomendacion?: string;
   respuestas: {
     pregunta1: number | null;
     pregunta2: number | null;

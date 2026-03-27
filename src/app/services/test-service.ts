@@ -10,16 +10,16 @@ export class TestService {
   private http = inject(HttpClient);
   private API_URL = 'http://localhost:8080/api/tests';
 
-  // 🔹 MÉTODO MODIFICADO: Ahora devuelve { tests: TestResultado[], resumen: any }
+  //metodo modificado
   obtenerHistorial(id: number): Observable<{ tests: TestResultado[]; resumen: any }> {
     console.log('📡 Solicitando historial para usuario:', id);
     return this.http.get<any>(`${this.API_URL}/historial-test/${id}`).pipe(
       map(response => {
-        console.log('📦 Datos recibidos del backend:', response);
+        console.log('Datos recibidos del backend:', response);
         
         // 1. Procesar la lista de tests
         const testsMapeados = response.tests.map((test: any) => this.mapearTest(test));
-        console.log('✅ Tests mapeados:', testsMapeados);
+        console.log('Tests mapeados:', testsMapeados);
         
         // 2. Procesar el resumen del procedimiento
         const resumen = {
@@ -29,7 +29,7 @@ export class TestService {
           mensaje: response.resumen?.mensaje || this.generarMensajePorDefecto(response.resumen?.totalTests)
         };
         
-        console.log('📊 Resumen del procedimiento:', resumen);
+        console.log('Resumen del procedimiento:', resumen);
         
         // 3. Retornar ambos
         return {
@@ -40,7 +40,7 @@ export class TestService {
     );
   }
 
-  // 🔹 MÉTODO ADICIONAL: Para obtener solo el resumen (opcional, por si lo necesitas)
+  //para obtener solo el resumen
   obtenerResumen(id: number): Observable<any> {
     return this.http.get<any>(`${this.API_URL}/resumen/${id}`).pipe(
       map(resumen => ({
@@ -63,10 +63,10 @@ export class TestService {
     return this.http.post(`${this.API_URL}/guardar`, testData);
   }
 
-  // 🔹 MÉTODO AUXILIAR: Generar mensaje por defecto si no viene del backend
+  //generamos un mensaje por defecto si no viene del backend
   private generarMensajePorDefecto(totalTests: number): string {
     if (totalTests === 0) {
-      return "📝 Aún no has realizado ningún test. ¡Realiza tu primera evaluación para conocer tu nivel de ansiedad!";
+      return "Aún no has realizado ningún test. ¡Realiza tu primera evaluación para conocer tu nivel de ansiedad!";
     }
     return "Continúa monitoreando tu salud mental. Cada test te ayuda a conocer mejor tu evolución.";
   }

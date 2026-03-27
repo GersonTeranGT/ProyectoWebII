@@ -90,7 +90,6 @@ export class FormularioTest {
         next: (response) => {
           this.cargando = false;
           
-          // Determinar el nivel en español
           let nivelEspañol = 'mínima';
           if (response.nivelAnsiedad === 'Mínima') nivelEspañol = 'mínima';
           else if (response.nivelAnsiedad === 'Leve') nivelEspañol = 'leve';
@@ -107,7 +106,6 @@ export class FormularioTest {
             confirmButtonText: 'Ver historial'
           }).then((result) => {
             if (result.isConfirmed) {
-              // SOLUCIÓN: Forzar recreación del componente como lo hace el link
               this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
                 this.router.navigate(['/historial-test']);
               });
