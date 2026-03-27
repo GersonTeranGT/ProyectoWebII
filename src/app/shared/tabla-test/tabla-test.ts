@@ -62,10 +62,10 @@ export class TablaTest implements OnInit {
 
   cargarHistorial() {
     const usuarioActual = this.authService.usuarioActual();
-    console.log('👤 Usuario actual:', usuarioActual);
+    console.log('Usuario actual:', usuarioActual);
 
     if (!usuarioActual?.id) {
-      console.error('❌ No hay usuario autenticado');
+      console.error('No hay usuario autenticado');
       this.cargando = false;
       // Establecer valores por defecto
       this.resumenBackend = {
@@ -83,11 +83,11 @@ export class TablaTest implements OnInit {
 
     this.testService.obtenerHistorial(usuarioActual.id).subscribe({
       next: (response) => {
-        console.log('📊 Respuesta completa:', response);
+        console.log('Respuesta completa:', response);
 
         // Validar que response existe
         if (!response) {
-          console.warn('⚠️ Respuesta vacía');
+          console.warn('Respuesta vacía');
           this.resumenBackend = {
             totalTests: 0,
             promedioPuntuacion: 0,
@@ -105,21 +105,21 @@ export class TablaTest implements OnInit {
           totalTests: response.resumen?.totalTests ?? 0,
           promedioPuntuacion: response.resumen?.promedioPuntuacion ?? 0,
           ultimoNivel: response.resumen?.ultimoNivel ?? 'Sin tests',
-          mensaje: response.resumen?.mensaje ?? '📝 Realiza tu primer test para ver tu progreso'
+          mensaje: response.resumen?.mensaje ?? ' Realiza tu primer test para ver tu progreso'
         };
 
         // Procesar tests
         this.historialCompleto = Array.isArray(response.tests) ? response.tests : [];
         this.historialFiltrado = [...this.historialCompleto];
 
-        console.log('📋 Tests:', this.historialCompleto.length);
-        console.log('📊 Resumen:', this.resumenBackend);
+        console.log('Tests:', this.historialCompleto.length);
+        console.log('Resumen:', this.resumenBackend);
 
         this.actualizarPaginacion();
         this.cargando = false;
       },
       error: (error) => {
-        console.error('❌ Error:', error);
+        console.error('Error:', error);
 
         // Establecer valores por defecto en caso de error
         this.resumenBackend = {

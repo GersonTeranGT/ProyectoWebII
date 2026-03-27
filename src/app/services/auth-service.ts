@@ -17,7 +17,7 @@ export class AuthService {
   rolActual = signal<string | null>(this.getRolInicial());
 
   private getSesionInicial(): boolean {
-    return !!localStorage.getItem('token'); // <-- CAMBIADO: verifica token
+    return !!localStorage.getItem('token');
   }
 
   private getUsuarioInicial(): any {
@@ -55,7 +55,7 @@ debugAuthState() {
           this.usuarioActual.set(response);
           this.rolActual.set(response.rol);
           
-          console.log('✅ Login exitoso, token guardado');
+          console.log('Login exitoso, token guardado');
         }
       }),
       map(response => !!(response && response.token))
@@ -63,7 +63,7 @@ debugAuthState() {
   }
 
   logout() {
-    localStorage.removeItem('token'); // <-- ELIMINAR TOKEN
+    localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('rol');
     this.sesionIniciada.set(false);
