@@ -289,9 +289,9 @@ export class TablaTest implements OnInit {
     const interpretaciones: { [key: string]: string } = {
       'mínima': '✓ Sigue así! Mantén tus hábitos saludables: ejercicio regular, buena alimentación y descanso. Practica la gratitud y mantén conexiones sociales positivas.',
       'minima': '✓ Sigue así! Mantén tus hábitos saludables: ejercicio regular, buena alimentación y descanso. Practica la gratitud y mantén conexiones sociales positivas.',
-      'leve': '⚠️ Prueba con respiración profunda (4-7-8): inhala 4s, retén 7s, exhala 8s. Medita 5-10 min diarios con apps como Calm o Headspace. Camina 30 min al aire libre.',
-      'moderada': '📌 Establece una rutina de sueño regular (7-9 horas). Reduce cafeína y alcohol. Practica yoga o estiramientos. Escribe tus preocupaciones en un diario.',
-      'severa': '🔴 Prioriza tu bienestar: reduce carga laboral, delega tareas. Habla con alguien de confianza. Ejercicio intenso 3-4 veces por semana ayuda a liberar endorfinas.'
+      'leve': 'Prueba con respiración profunda (4-7-8): inhala 4s, retén 7s, exhala 8s. Medita 5-10 min diarios con apps como Calm o Headspace. Camina 30 min al aire libre.',
+      'moderada': 'Establece una rutina de sueño regular (7-9 horas). Reduce cafeína y alcohol. Practica yoga o estiramientos. Escribe tus preocupaciones en un diario.',
+      'severa': 'Prioriza tu bienestar: reduce carga laboral, delega tareas. Habla con alguien de confianza. Ejercicio intenso 3-4 veces por semana ayuda a liberar endorfinas.'
     };
 
     // rangos
